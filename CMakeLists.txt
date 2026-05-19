@@ -1,3 +1,19 @@
+# == DO NOT EDIT THE FOLLOWING LINES for the Raspberry Pi Pico VS Code Extension to work ==
+if(WIN32)
+    set(USERHOME $ENV{USERPROFILE})
+else()
+    set(USERHOME $ENV{HOME})
+endif()
+set(sdkVersion 2.2.0)
+set(toolchainVersion 14_2_Rel1)
+set(picotoolVersion 2.2.0-a4)
+set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
+if (EXISTS ${picoVscode})
+    include(${picoVscode})
+endif()
+# ====================================================================================
+set(PICO_BOARD pico CACHE STRING "Board type")
+
 cmake_minimum_required(VERSION 3.12)
 
 # initialize the SDK based on PICO_SDK_PATH
@@ -12,4 +28,14 @@ pico_sdk_init()
 # rest of your project
 
 add_subdirectory(freertos)
-add_subdirectory(ampel)
+
+add_executable(pico_freertos_samples
+        main.c
+)
+
+target_link_libraries(pico_freertos_samples 
+            pico_stdlib 
+            freertos)
+pico_add_extra_outputs(pico_freertos_samples)
+pico_enable_stdio_usb(pico_freertos_samples 1)
+
