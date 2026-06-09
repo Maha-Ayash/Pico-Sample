@@ -31,11 +31,15 @@ add_subdirectory(freertos)
 
 add_executable(pico_freertos_samples
         main.c
+        SSD1306/lib/ssd1306.c
+        SSD1306/lib/twi.c
 )
 
 target_link_libraries(pico_freertos_samples 
             pico_stdlib 
-            freertos)
+            freertos
+            hardware_i2c
+            )
 pico_add_extra_outputs(pico_freertos_samples)
 pico_enable_stdio_usb(pico_freertos_samples 1)
 
